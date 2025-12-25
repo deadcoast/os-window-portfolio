@@ -29,7 +29,7 @@ interface DraggableWindowProps {
 const ICON_ZONE = 120;
 const TASKBAR_HEIGHT = 40;
 
-function DraggableWindow({ window, onDragStart, onDragMove, onMinimize, onClose, onFocus, onRecenter }: DraggableWindowProps) {
+function DraggableWindow({ window: windowData, onDragStart, onDragMove, onMinimize, onClose, onFocus, onRecenter }: DraggableWindowProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const windowRef = useRef<HTMLDivElement>(null);
@@ -42,10 +42,10 @@ function DraggableWindow({ window, onDragStart, onDragMove, onMinimize, onClose,
         let newX = e.clientX - dragOffset.x;
         let newY = e.clientY - dragOffset.y;
 
-        newX = Math.max(ICON_ZONE, Math.min(newX, window.innerWidth - window.width - 10));
+        newX = Math.max(ICON_ZONE, Math.min(newX, window.innerWidth - windowData.width - 10));
         newY = Math.max(0, Math.min(newY, window.innerHeight - TASKBAR_HEIGHT - 30));
 
-        onDragMove(window.id, newX, newY);
+        onDragMove(windowData.id, newX, newY);
       });
     };
 
@@ -60,12 +60,12 @@ function DraggableWindow({ window, onDragStart, onDragMove, onMinimize, onClose,
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDragging, dragOffset, window.id, window.width, onDragMove]);
+  }, [isDragging, dragOffset, windowData.id, windowData.width, onDragMove]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest('.window-controls')) return;
 
-    onDragStart(window.id);
+    onDragStart(windowData.id);
     setIsDragging(true);
 
     const rect = windowRef.current?.getBoundingClientRect();
@@ -82,23 +82,23 @@ function DraggableWindow({ window, onDragStart, onDragMove, onMinimize, onClose,
     if ((e.target as HTMLElement).closest('.window-content')) return;
 
     e.stopPropagation();
-    onRecenter(window.id);
+    onRecenter(windowData.id);
   };
 
-  if (window.minimized) return null;
+  if (windowData.minimized) return null;
 
   return (
     <div
       ref={windowRef}
       className="os-window"
       style={{
-        left: `${window.x}px`,
-        top: `${window.y}px`,
-        width: `${window.width}px`,
-        height: `${window.height}px`,
-        zIndex: window.zIndex,
+        left: `${windowData.x}px`,
+        top: `${windowData.y}px`,
+        width: `${windowData.width}px`,
+        height: `${windowData.height}px`,
+        zIndex: windowData.zIndex,
       }}
-      onClick={() => onFocus(window.id)}
+      onClick={() => onFocus(windowData.id)}
     >
       <div
         className="window-titlebar"
@@ -106,23 +106,23 @@ function DraggableWindow({ window, onDragStart, onDragMove, onMinimize, onClose,
         onDoubleClick={handleDoubleClick}
       >
         <div className="window-title">
-          {window.icon}
-          <span>{window.title}</span>
+          {windowData.icon}
+          <span>{windowData.title}</span>
         </div>
         <div className="window-controls">
-          <button onClick={() => onMinimize(window.id)} className="window-btn window-btn-minimize" title="Minimize">
+          <button onClick={() => onMinimize(windowData.id)} className="window-btn window-btn-minimize" title="Minimize">
             <Minus size={14} />
           </button>
           <button className="window-btn window-btn-maximize" title="Maximize">
             <Maximize2 size={14} />
           </button>
-          <button onClick={() => onClose(window.id)} className="window-btn window-btn-close" title="Close">
+          <button onClick={() => onClose(windowData.id)} className="window-btn window-btn-close" title="Close">
             <X size={14} />
           </button>
         </div>
       </div>
       <div className="window-content">
-        {window.content}
+        {windowData.content}
       </div>
     </div>
   );
