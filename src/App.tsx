@@ -3,11 +3,17 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { Terminal } from './components/Terminal';
 import { Portfolio } from './components/Portfolio';
 import { ThemeSwitcher } from './components/ThemeSwitcher';
+import SplashScreen from './components/SplashScreen';
 import { TerminalSquare, User, Palette } from 'lucide-react';
 
 function AppContent() {
   const [activeTab, setActiveTab] = useState<'portfolio' | 'terminal'>('portfolio');
   const [showThemes, setShowThemes] = useState(false);
+  const [splashComplete, setSplashComplete] = useState(false);
+
+  if (!splashComplete) {
+    return <SplashScreen onComplete={() => setSplashComplete(true)} />;
+  }
 
   return (
     <div className="app-container">
