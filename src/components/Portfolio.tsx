@@ -1,5 +1,6 @@
 import { Terminal, Minus, X, Maximize2, Clock, Calculator, FileText, Settings, Image, Folder, Info, User, Mail, Github, Linkedin } from 'lucide-react';
 import { RetroLoader } from './RetroLoader';
+import { Carousel3D } from './Carousel3D';
 import { useState, useEffect, useRef } from 'react';
 
 interface WindowData {
@@ -123,11 +124,11 @@ export function Portfolio() {
 
   const desktopIcons: DesktopIcon[] = [
     { id: 'about', title: 'About.exe', icon: <User size={32} />, x: 20, y: 20 },
-    { id: 'terminal', title: 'Terminal.exe', icon: <Terminal size={32} />, x: 20, y: 130 },
-    { id: 'files', title: 'Files.exe', icon: <Folder size={32} />, x: 20, y: 240 },
-    { id: 'calculator', title: 'Calc.exe', icon: <Calculator size={32} />, x: 20, y: 350 },
-    { id: 'notepad', title: 'Notes.exe', icon: <FileText size={32} />, x: 20, y: 460 },
-    { id: 'settings', title: 'Settings.exe', icon: <Settings size={32} />, x: 20, y: 570 },
+    { id: 'gallery', title: 'Gallery.exe', icon: <Image size={32} />, x: 20, y: 130 },
+    { id: 'terminal', title: 'Terminal.exe', icon: <Terminal size={32} />, x: 20, y: 240 },
+    { id: 'files', title: 'Files.exe', icon: <Folder size={32} />, x: 20, y: 350 },
+    { id: 'calculator', title: 'Calc.exe', icon: <Calculator size={32} />, x: 20, y: 460 },
+    { id: 'notepad', title: 'Notes.exe', icon: <FileText size={32} />, x: 20, y: 570 },
   ];
 
   useEffect(() => {
@@ -152,6 +153,7 @@ export function Portfolio() {
     const windowConfig = {
       terminal: { title: 'Terminal', icon: <Terminal size={16} />, width: 600, height: 400 },
       about: { title: 'About Me', icon: <User size={16} />, width: 700, height: 500 },
+      gallery: { title: '3D Art Gallery', icon: <Image size={16} />, width: 500, height: 550 },
       files: { title: 'File Explorer', icon: <Folder size={16} />, width: 650, height: 450 },
       calculator: { title: 'Calculator', icon: <Calculator size={16} />, width: 320, height: 480 },
       notepad: { title: 'Notepad', icon: <FileText size={16} />, width: 600, height: 400 },
@@ -177,6 +179,13 @@ export function Portfolio() {
 
   const getWindowContent = (id: string) => {
     switch (id) {
+      case 'gallery':
+        return (
+          <div className="window-carousel">
+            <h3>Art Gallery</h3>
+            <Carousel3D />
+          </div>
+        );
       case 'terminal':
         return (
           <div className="window-terminal">
@@ -496,6 +505,10 @@ export function Portfolio() {
               <User size={16} />
               <span>About Me</span>
             </button>
+            <button className="start-menu-item" onClick={() => { openWindow('gallery'); setShowStartMenu(false); }}>
+              <Image size={16} />
+              <span>3D Gallery</span>
+            </button>
             <button className="start-menu-item" onClick={() => { openWindow('terminal'); setShowStartMenu(false); }}>
               <Terminal size={16} />
               <span>Terminal</span>
@@ -515,6 +528,9 @@ export function Portfolio() {
               <FileText size={16} />
               <span>Notepad</span>
             </button>
+          </div>
+          <div className="start-menu-section">
+            <div className="start-menu-section-title">System</div>
             <button className="start-menu-item" onClick={() => { openWindow('settings'); setShowStartMenu(false); }}>
               <Settings size={16} />
               <span>Settings</span>
