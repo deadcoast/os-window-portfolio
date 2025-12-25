@@ -23,9 +23,13 @@ interface DraggableWindowProps {
   onMinimize: (id: string) => void;
   onClose: (id: string) => void;
   onFocus: (id: string) => void;
+  onRecenter: (id: string) => void;
 }
 
-function DraggableWindow({ window, onDragStart, onDragMove, onMinimize, onClose, onFocus }: DraggableWindowProps) {
+const ICON_ZONE = 120;
+const TASKBAR_HEIGHT = 40;
+
+function DraggableWindow({ window, onDragStart, onDragMove, onMinimize, onClose, onFocus, onRecenter }: DraggableWindowProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const windowRef = useRef<HTMLDivElement>(null);
@@ -34,23 +38,29 @@ function DraggableWindow({ window, onDragStart, onDragMove, onMinimize, onClose,
     if (!isDragging) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      const newX = e.clientX - dragOffset.x;
-      const newY = e.clientY - dragOffset.y;
-      onDragMove(window.id, newX, newY);
+      requestAnimationFrame(() => {
+        let newX = e.clientX - dragOffset.x;
+        let newY = e.clientY - dragOffset.y;
+
+        newX = Math.max(ICON_ZONE, Math.min(newX, window.innerWidth - window.width - 10));
+        newY = Math.max(0, Math.min(newY, window.innerHeight - TASKBAR_HEIGHT - 30));
+
+        onDragMove(window.id, newX, newY);
+      });
     };
 
     const handleMouseUp = () => {
       setIsDragging(false);
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseup', handleMouseUp);
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDragging, dragOffset, window.id, onDragMove]);
+  }, [isDragging, dragOffset, window.id, window.width, onDragMove]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest('.window-controls')) return;
@@ -65,6 +75,14 @@ function DraggableWindow({ window, onDragStart, onDragMove, onMinimize, onClose,
         y: e.clientY - rect.top,
       });
     }
+  };
+
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest('.window-controls')) return;
+    if ((e.target as HTMLElement).closest('.window-content')) return;
+
+    e.stopPropagation();
+    onRecenter(window.id);
   };
 
   if (window.minimized) return null;
@@ -82,7 +100,11 @@ function DraggableWindow({ window, onDragStart, onDragMove, onMinimize, onClose,
       }}
       onClick={() => onFocus(window.id)}
     >
-      <div className="window-titlebar" onMouseDown={handleMouseDown}>
+      <div
+        className="window-titlebar"
+        onMouseDown={handleMouseDown}
+        onDoubleClick={handleDoubleClick}
+      >
         <div className="window-title">
           {window.icon}
           <span>{window.title}</span>
@@ -144,6 +166,17 @@ export function Portfolio() {
     };
   }, []);
 
+  const toggleWindow = (iconId: string) => {
+    const existingWindow = windows.find(w => w.id === iconId);
+
+    if (existingWindow) {
+      handleClose(iconId);
+      return;
+    }
+
+    openWindow(iconId);
+  };
+
   const openWindow = (iconId: string) => {
     if (windows.some(w => w.id === iconId)) {
       handleFocus(iconId);
@@ -153,7 +186,7 @@ export function Portfolio() {
     const windowConfig = {
       terminal: { title: 'Terminal', icon: <Terminal size={16} />, width: 600, height: 400 },
       about: { title: 'About Me', icon: <User size={16} />, width: 700, height: 500 },
-      gallery: { title: '3D Art Gallery', icon: <Image size={16} />, width: 500, height: 550 },
+      gallery: { title: '3D Art Gallery', icon: <Image size={16} />, width: 600, height: 450 },
       files: { title: 'File Explorer', icon: <Folder size={16} />, width: 650, height: 450 },
       calculator: { title: 'Calculator', icon: <Calculator size={16} />, width: 320, height: 480 },
       notepad: { title: 'Notepad', icon: <FileText size={16} />, width: 600, height: 400 },
@@ -413,6 +446,17 @@ export function Portfolio() {
     setNextZIndex(maxZ + 2);
   };
 
+  const handleRecenter = (id: string) => {
+    const centerX = (window.innerWidth - 500) / 2;
+    const centerY = (window.innerHeight - TASKBAR_HEIGHT - 400) / 2;
+
+    setWindows(prev =>
+      prev.map(w =>
+        w.id === id ? { ...w, x: Math.max(ICON_ZONE, centerX), y: Math.max(0, centerY) } : w
+      )
+    );
+  };
+
   if (loading) {
     return (
       <div className="loading-screen">
@@ -447,7 +491,7 @@ export function Portfolio() {
             key={icon.id}
             className="desktop-icon"
             style={{ left: `${icon.x}px`, top: `${icon.y}px` }}
-            onDoubleClick={() => openWindow(icon.id)}
+            onClick={() => toggleWindow(icon.id)}
           >
             {icon.icon}
             <span>{icon.title}</span>
@@ -463,6 +507,7 @@ export function Portfolio() {
             onMinimize={handleMinimize}
             onClose={handleClose}
             onFocus={handleFocus}
+            onRecenter={handleRecenter}
           />
         ))}
       </div>

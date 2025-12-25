@@ -2018,7 +2018,7 @@ p {
 .carousel-viewport {
   overflow: hidden;
   width: 100%;
-  max-width: 400px;
+  max-width: 100%;
 }
 
 .carousel-track {
@@ -2035,7 +2035,7 @@ p {
 
 .carousel-item {
   height: 100%;
-  aspect-ratio: 16/9;
+  aspect-ratio: 21/9;
   border-radius: 0.5rem;
   overflow: hidden;
   position: relative;
@@ -2078,10 +2078,11 @@ p {
   justify-content: center;
   height: 100%;
   background: var(--bg-primary);
+  padding: 0.5rem 0;
 }
 
 .window-carousel h3 {
   color: var(--text-primary);
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   font-size: 1rem;
 }
