@@ -1,24 +1,70 @@
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { ChevronUp, ChevronDown } from 'lucide-react';
+
+const HEIGHT = 160;
+const EDGE = 30;
+
 export function Carousel3D() {
-  const images = [
-    'https://www.deadcoast.net/art-gallery?pgid=m2z6zp584-200e5f7a-df88-4579-8075-9f5326692228',
-    'https://www.deadcoast.net/art-gallery?pgid=m2z6zp584-f3d2006b-680c-47c4-96d8-79edf26c9769',
-    'https://www.deadcoast.net/art-gallery?pgid=m2z6zp584-ac020dde-b4a6-49b0-85a8-f2eeb0e08543',
-    'https://www.deadcoast.net/art-gallery?pgid=m2z6zp584-babd63a5-9597-4ad5-a1c4-0384e7553fb0',
-    'https://www.deadcoast.net/art-gallery?pgid=m2z6zp584-924b2c8b-6cf8-453f-8e70-022808e7df32',
-    'https://www.deadcoast.net/art-gallery?pgid=m2z6zp584-11bb4184-abb5-4beb-bc4d-230cd8d2a6d9',
-    'https://www.deadcoast.net/art-gallery?pgid=m2z6zp584-8ed7672c-c438-481c-a80f-7db0ac03c41d',
-    'https://www.deadcoast.net/art-gallery?pgid=m2z6zp584-200e5f7a-df88-4579-8075-9f5326692228'
-  ];
+  const testImage = 'https://static.wixstatic.com/media/8d9a31_a02da67fa0f245e3b5657a2e480fab3d~mv2.png/v1/crop/x_0,y_795,w_4000,h_2665/fill/w_1948,h_1298,al_c,q_95,usm_0.66_1.00_0.01,enc_avif,quality_auto/Untitled_Artwork%203.png';
+
+  const images = Array(8).fill(testImage);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const toPrev = () => {
+    if (activeIndex === 0) return;
+    setActiveIndex(prev => prev - 1);
+  };
+
+  const toNext = () => {
+    if (activeIndex === images.length - 1) return;
+    setActiveIndex(prev => prev + 1);
+  };
 
   return (
-    <div className="carousel-3d-container">
-      <div className="carousel-3d-inner">
-        {images.map((img, index) => (
-          <div key={index} className="carousel-3d-card" style={{ '--index': index } as React.CSSProperties}>
-            <img src={img} alt={`Artwork ${index + 1}`} />
-          </div>
-        ))}
+    <div className="vertical-carousel">
+      <button
+        className={`carousel-nav ${activeIndex === 0 ? 'disabled' : ''}`}
+        onClick={toPrev}
+        disabled={activeIndex === 0}
+      >
+        <ChevronUp size={24} />
+      </button>
+
+      <div className="carousel-viewport" style={{ height: HEIGHT + EDGE * 2 }}>
+        <motion.div
+          className="carousel-track"
+          animate={{ y: activeIndex * -HEIGHT + EDGE }}
+          transition={{ type: 'spring', bounce: 0.3 }}
+        >
+          {images.map((src, index) => (
+            <div
+              key={index}
+              style={{ height: HEIGHT }}
+              className="carousel-item-wrapper"
+            >
+              <div
+                className={`carousel-item ${activeIndex !== index ? 'inactive' : ''} ${activeIndex > index ? 'prev' : ''} ${activeIndex < index ? 'next' : ''}`}
+              >
+                <img
+                  src={src}
+                  alt={`Artwork ${index + 1}`}
+                />
+                <div className="carousel-overlay"></div>
+              </div>
+            </div>
+          ))}
+        </motion.div>
       </div>
+
+      <button
+        className={`carousel-nav ${activeIndex === images.length - 1 ? 'disabled' : ''}`}
+        onClick={toNext}
+        disabled={activeIndex === images.length - 1}
+      >
+        <ChevronDown size={24} />
+      </button>
     </div>
   );
 }
