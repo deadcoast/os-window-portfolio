@@ -12,6 +12,8 @@
 
 ## WEB DEMO 
 
+- Test the layout at:
+
 [dead-os-web](https://retro-modern-computi-m9ag.bolt.host/)
   
 ## SYSTEM REQUIREMENTS
