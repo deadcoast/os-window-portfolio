@@ -10,7 +10,7 @@
 
 ![Portfolio OS Screenshot](./assets/images/website_screenshot.png)
 
-## 📋 SYSTEM REQUIREMENTS
+## SYSTEM REQUIREMENTS
 
 ```
 ┌─────────────────────────────────────────────┐
@@ -21,7 +21,7 @@
 └─────────────────────────────────────────────┘
 ```
 
-## 🎨 ABOUT
+## ABOUT
 
 Portfolio OS is a fully functional desktop operating system interface built for the web. Experience the nostalgia of classic computing with modern web technologies. No CRT effects, no neon green - just authentic retro UI design.
 
@@ -34,7 +34,7 @@ Portfolio OS is a fully functional desktop operating system interface built for 
 - Authentic beveled borders and 3D button effects
 - Teal desktop with silver-gray interface elements
 
-## 🔧 INSTALLATION
+## INSTALLATION
 
 ```bash
 # Clone the repository
@@ -51,7 +51,7 @@ $ npm run dev
 $ npm run build
 ```
 
-## 📦 TECH STACK
+## TECH STACK
 
 ```
 ┌────────────────────────────────────┐
@@ -64,7 +64,7 @@ $ npm run build
 └────────────────────────────────────┘
 ```
 
-## 🖥️ APPLICATIONS
+## APPLICATIONS
 
 ### Terminal.exe
 Interactive command-line interface with functional commands:
@@ -87,7 +87,7 @@ Simple text editor for quick notes and documentation.
 ### Gallery
 3D carousel showcase for project images and artwork.
 
-## 🎯 PROJECT STRUCTURE
+## PROJECT STRUCTURE
 
 ```
 portfolio-os/
@@ -110,17 +110,7 @@ portfolio-os/
 └── public/                     # Static assets
 ```
 
-## 🎨 DESIGN PHILOSOPHY
-
-This project embraces **authentic retro aesthetics** without relying on overused tropes:
-
-❌ **Avoided:**
-- CRT scanlines and screen flicker
-- Phosphor glow effects
-- Neon green terminal text
-- Matrix-style falling code
-
-✅ **Implemented:**
+**Default Theme**:
 - Classic teal (#008080) desktop background
 - Silver-gray (#C0C0C0) window chrome
 - Navy blue (#000080) title bars
@@ -128,7 +118,7 @@ This project embraces **authentic retro aesthetics** without relying on overused
 - Authentic button press states
 - System-appropriate typography
 
-## 🚀 DEVELOPMENT
+## DEVELOPMENT
 
 ```bash
 # Run development server
@@ -147,7 +137,7 @@ $ npm run build
 $ npm run preview
 ```
 
-## 📝 LICENSE
+## LICENSE
 
 ```
 ┌──────────────────────────────────────────────┐
@@ -160,7 +150,7 @@ $ npm run preview
 └──────────────────────────────────────────────┘
 ```
 
-## 🤝 CONTRIBUTING
+## CONTRIBUTING
 
 Contributions are welcome! Feel free to:
 - Report bugs
@@ -168,7 +158,7 @@ Contributions are welcome! Feel free to:
 - Submit pull requests
 - Share feedback
 
-## 📞 CONTACT
+## CONTACT
 
 ```
 ═══════════════════════════════════════════
