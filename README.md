@@ -10,6 +10,10 @@
 
 ![Portfolio OS Screenshot](./assets/images/website_screenshot.png)
 
+## WEB DEMO 
+
+[dead-os-web](https://retro-modern-computi-m9ag.bolt.host/)
+  
 ## SYSTEM REQUIREMENTS
 
 ```
@@ -20,9 +24,6 @@
 │ Display:   1024x768 or higher               │
 └─────────────────────────────────────────────┘
 ```
-
-## WEB DEMO
-[dead-os-web](https://retro-modern-computi-m9ag.bolt.host/)
 
 ## ABOUT
 
