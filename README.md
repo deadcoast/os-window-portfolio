@@ -21,6 +21,9 @@
 └─────────────────────────────────────────────┘
 ```
 
+## WEB DEMO
+[dead-os-web](https://retro-modern-computi-m9ag.bolt.host/)
+
 ## ABOUT
 
 Portfolio OS is a fully functional desktop operating system interface built for the web. Experience the nostalgia of classic computing with modern web technologies. No CRT effects, no neon green - just authentic retro UI design.
