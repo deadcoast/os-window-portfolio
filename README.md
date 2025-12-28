@@ -44,8 +44,8 @@ Portfolio OS is a fully functional desktop operating system interface built for 
 
 ```bash
 # Clone the repository
-$ git clone <repository-url>
-$ cd portfolio-os
+$ git clone os-window-portfolio
+$ cd os-window-portfolio
 
 # Install dependencies
 $ npm install
